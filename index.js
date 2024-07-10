@@ -8,29 +8,34 @@ const logger = require("morgan");
 const methodOverride = require("method-override");
 // connection to our database
 const connectToMongoDB = require("./database/mongodb");
+const engine = require("express-react-views");
 
 /*
     8. Set up necessary modules for login sessions
 */
-require('dotenv').config();
-const cookieParser = require('cookie-parser');
-const sessions = require('express-session');
+require("dotenv").config();
+const cookieParser = require("cookie-parser");
+const sessions = require("express-session");
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 const oneDay = 1000 * 60 * 60 * 24;
-app.use(sessions({
+app.use(
+  sessions({
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
-    cookie: {maxAge: oneDay},
-}))
+    cookie: { maxAge: oneDay },
+  })
+);
 
 /*
     Setting up middleware
 */
 // view engine settings
-app.set("view engine", "ejs");
+app.set("view engine", "jsx");
 app.set("views", path.join(__dirname, "views"));
+app.engine("jsx", engine.createEngine());
+
 app.use(express.static(path.join(__dirname, "public")));
 // Logging every request in the terminal
 app.use(logger("dev"));
@@ -58,8 +63,8 @@ app.use("/api/pokemon", pokemonRouter);
 /*
     4. Plug in the user router
 */
-const userRouter = require('./routes/api/userRouter');
-app.use('/api/user', userRouter);
+const userRouter = require("./routes/api/userRouter");
+app.use("/api/user", userRouter);
 
 // Front-end
 const viewsRouter = require("./routes/viewRouters/viewRouter");
