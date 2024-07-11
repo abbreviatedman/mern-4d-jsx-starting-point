@@ -1,3 +1,10 @@
+const React = require('react');
+
+const HtmlSkeleton = require('./HtmlSkeleton');
+
+module.exports = () => ()
+
+/*
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,3 +40,4 @@
     </form>
 </body>
 </html>
+*/
